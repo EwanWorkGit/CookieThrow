@@ -20,6 +20,8 @@ public class CameraMovement : MonoBehaviour
 
         RotationX -= inputs.y;
         RotationY += inputs.x;
+
+        RotationX = Mathf.Clamp(RotationX, -90f, 90f);
     }
 
     private void LateUpdate()
