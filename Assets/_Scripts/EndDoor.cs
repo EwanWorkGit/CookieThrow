@@ -5,12 +5,18 @@ using UnityEngine;
 public class EndDoor : MonoBehaviour, IInteractible
 {
     [SerializeField] Transform Player, End;
+    [SerializeField] List<CookieCrook> Crooks = new(); 
 
     public void Interact()
     {
-        Player.position = End.position;
-        Debug.Log("TP:d!");
-
-        //add rotation
+        if(Crooks.Count <= 0)
+        {
+            Player.position = End.position;
+        }
+        else
+        {
+            //display lock
+            Debug.Log("KILL THEM ALL!");
+        }
     }
 }

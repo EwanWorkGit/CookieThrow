@@ -11,6 +11,7 @@ public class DeathHandler : MonoBehaviour
     public bool IsDead = false;
 
     [SerializeField] Image FadingScreen;
+    [SerializeField] GameObject DeathText, RetryButton, ExitButton;
 
     private void Awake()
     {
@@ -35,11 +36,11 @@ public class DeathHandler : MonoBehaviour
     {
         if(Instance != null)
         {
-            StartCoroutine(FadeToBlack());
+            StartCoroutine(FadeToBlackAndShowMenu());
         }
     }
 
-    IEnumerator FadeToBlack()
+    IEnumerator FadeToBlackAndShowMenu()
     {
         float minOpacity = 0, maxOpacity = 1;
 
@@ -57,5 +58,11 @@ public class DeathHandler : MonoBehaviour
 
             yield return null;
         }
+
+        Cursor.lockState = CursorLockMode.None;
+
+        DeathText.SetActive(true);
+        RetryButton.SetActive(true);
+        ExitButton.SetActive(true);
     }
 }

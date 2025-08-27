@@ -5,40 +5,52 @@ using UnityEngine;
 
 public class CookieCrook : MonoBehaviour
 {
+    public float Health = 100f;
+
     [SerializeField] DefaultDoor Door;
     [SerializeField] GameObject BulletPrefab;
     [SerializeField] Transform Player, BulletOrigin;
+    [SerializeField] CameraMovement CamMovement;
 
-    [SerializeField] float FireDelay = 0.1f, BulletForce = 45f;
+    [SerializeField] float FireDelay = 0.1f, BulletForce = 45f, ReloadTime = 2f;
+    [SerializeField] int MaxAmmo = 7, CurrentAmmo = 0;
 
     Rigidbody Rb;
 
-    float FiringCone = 10f;
-
     bool CanFire = false;
     bool IsFiring = false;
+    bool IsReloading = false;
 
     private void Start()
     {
+        CurrentAmmo = MaxAmmo;
+
         Rb = GetComponent<Rigidbody>();
         Door.OnEnter += Activate;
     }
 
     private void Update()
     {
-        if(!IsFiring && CanFire)
+        if(Health <= 0)
         {
-            if(Vector3.Angle(transform.position, Player.position) < FiringCone / 2f)
-            {
-                //inside firing cone and can fire and not already firing
-                StartCoroutine(Fire());
-            }
+            Die();
+        }
+
+        if(!IsFiring && CanFire && CamMovement.CanMove && !IsReloading && CurrentAmmo > 0)
+        {
+            //inside firing cone and can fire and not already firing
+            StartCoroutine(Fire());
+            CurrentAmmo--;
+        }
+        else if(!IsReloading && CurrentAmmo <= 0)
+        {
+            StartCoroutine(Reload());
         }
     }
 
     private void FixedUpdate()
     {
-        if(CanFire)
+        if(CanFire && CamMovement.CanMove)
         {
             //look towards player
             Vector3 dir = transform.position - Player.transform.position; //taget is player
@@ -75,5 +87,22 @@ public class CookieCrook : MonoBehaviour
         yield return new WaitForSeconds(FireDelay);
 
         IsFiring = false;
+    }
+
+    IEnumerator Reload()
+    {
+        IsReloading = true;
+
+        yield return new WaitForSeconds(ReloadTime);
+
+        CurrentAmmo = MaxAmmo;
+
+        IsReloading = false;
+    }
+
+    void Die()
+    {
+        //Play anim, destroy / disable
+        Destroy(gameObject);
     }
 }
