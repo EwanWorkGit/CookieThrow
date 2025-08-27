@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
+    [SerializeField] CameraMovement CamMovement;
     [SerializeField] Camera Cam;
     [SerializeField] Vector3 MovementVector;
 
@@ -21,7 +22,7 @@ public class Movement : MonoBehaviour
 
     private void Update()
     {
-        if(!_DeathHandler.IsDead)
+        if (CamMovement.CanMove)
         {
             Vector2 inputs = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
@@ -45,7 +46,7 @@ public class Movement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(!_DeathHandler.IsDead)
+        if(CamMovement.CanMove)
         {
             Rb.velocity = new Vector3(MovementVector.x, Rb.velocity.y, MovementVector.z);
         }

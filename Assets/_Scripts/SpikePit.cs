@@ -13,7 +13,7 @@ public class SpikePit : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(_DeathHandler != null)
+        if(other.CompareTag("Player") && _DeathHandler != null)
         {
             _DeathHandler.KillPlayer();
         }
