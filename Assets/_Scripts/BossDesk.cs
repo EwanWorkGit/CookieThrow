@@ -5,14 +5,14 @@ using UnityEngine;
 public class BossDesk : MonoBehaviour, IInteractible
 {
     [SerializeField] Transform CookiePlacement;
-    [SerializeField] Transform Cookie;
+    [SerializeField] ExplosiveCookie Cookie;
 
     [SerializeField] float BlowTime = 2f;
 
     public void Interact()
     {
         Cookie.gameObject.SetActive(true);
-        Cookie.position = CookiePlacement.position;
+        Cookie.transform.position = CookiePlacement.position;
 
         StartCoroutine(WaitAndBlow());
     }
@@ -20,9 +20,8 @@ public class BossDesk : MonoBehaviour, IInteractible
     IEnumerator WaitAndBlow()
     {
         yield return new WaitForSeconds(BlowTime);
-        //blow up
-        Debug.Log("BOOOOOOM!");
-        GameSceneManager.Instance.ExitToMenu();
+        Cookie.ExplosionVFX.Play();
+        EndGame.Instance.TriggerFade(); //fades to menu
     }
 
 }

@@ -6,6 +6,7 @@ using UnityEngine;
 public class ExplosiveCookie : MonoBehaviour, IInteractible
 {
     public Action OnInteraction;
+    public ParticleSystem ExplosionVFX;
 
     public void Interact()
     {

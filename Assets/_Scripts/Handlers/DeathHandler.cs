@@ -27,7 +27,7 @@ public class DeathHandler : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.K))
         {
-            //kill yourself
+            //kills yourself
             KillPlayer();
         }
     }
