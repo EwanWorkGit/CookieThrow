@@ -8,15 +8,18 @@ public class Movement : MonoBehaviour
     [SerializeField] Camera Cam;
     [SerializeField] Vector3 MovementVector;
 
-    [SerializeField] float Speed = 5f, UpForce = 100f, JumpRayDistance = 0.6f;
+    [SerializeField] AudioSource AudioPlayer;
+    [SerializeField] AudioClip Footstep;
+
+    [SerializeField] float Speed = 5f, UpForce = 100f, JumpRayDistance = 0.6f, StepInterval = 0.2f;
     [SerializeField] bool IsJumping = false;
 
-    DeathHandler _DeathHandler;
     Rigidbody Rb;
+
+    float StepTimer;
 
     private void Start()
     {
-        _DeathHandler = DeathHandler.Instance;
         Rb = GetComponent<Rigidbody>();
     }
 
@@ -40,6 +43,21 @@ public class Movement : MonoBehaviour
             if (!IsJumping && Input.GetKeyDown(KeyCode.Space))
             {
                 Rb.AddForce(new Vector3(0f, UpForce));
+            }
+        }
+
+        if(Mathf.Abs(Rb.velocity.x) > 0.1f || Mathf.Abs(Rb.velocity.z) > 0.1f)
+        {
+            if(!IsJumping)
+            {
+                StepTimer += Time.deltaTime;
+
+                if (StepTimer >= StepInterval)
+                {
+                    StepTimer = 0;
+                    AudioPlayer.pitch = Random.Range(0.9f, 1.1f);
+                    AudioPlayer.PlayOneShot(Footstep);
+                }
             }
         }
     }

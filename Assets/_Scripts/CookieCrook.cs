@@ -11,15 +11,18 @@ public class CookieCrook : MonoBehaviour
     [SerializeField] GameObject BulletPrefab;
     [SerializeField] Transform Player, BulletOrigin;
     [SerializeField] CameraMovement CamMovement;
+    [SerializeField] GameObject[] Expressions;
+    [SerializeField] AudioSource AudioPlayer;
+    [SerializeField] AudioClip Gunshot;
 
     [SerializeField] float FireDelay = 0.1f, BulletForce = 45f, ReloadTime = 2f;
     [SerializeField] int MaxAmmo = 7, CurrentAmmo = 0;
 
+    [SerializeField] bool CanFire = false, IsFiring = false, IsReloading = false;
+
     Rigidbody Rb;
 
-    bool CanFire = false;
-    bool IsFiring = false;
-    bool IsReloading = false;
+    
 
     private void Start()
     {
@@ -83,8 +86,10 @@ public class CookieCrook : MonoBehaviour
         GameObject bullet = Instantiate(BulletPrefab, BulletOrigin.position, bulletRot);
         Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
         bulletRb.AddForce(bullet.transform.up * BulletForce, ForceMode.Impulse); //up since its rotated
+        AudioPlayer.pitch = UnityEngine.Random.Range(0.8f, 1.1f);
+        AudioPlayer.PlayOneShot(Gunshot);
 
-        yield return new WaitForSeconds(FireDelay);
+        yield return new WaitForSeconds(FireDelay + UnityEngine.Random.Range(0f, 0.3f));
 
         IsFiring = false;
     }
@@ -104,5 +109,20 @@ public class CookieCrook : MonoBehaviour
     {
         //Play anim, destroy / disable
         Destroy(gameObject);
+    }
+
+    public void ChangeExpression(int index)
+    {
+        for(int i = 0; i < Expressions.Length; i++)
+        {
+            if (Expressions[index] == Expressions[i])
+            {
+                Expressions[i].SetActive(true);
+            }
+            else
+            {
+                Expressions[i].SetActive(false);
+            }
+        }
     }
 }

@@ -5,6 +5,8 @@ using UnityEngine;
 public class PlayerSlap : MonoBehaviour
 {
     [SerializeField] Camera Cam;
+    [SerializeField] AudioSource AudioPlayer;
+    [SerializeField] AudioClip SlapAudio;
 
     [SerializeField] float SlapDistance = 2f, SlapDamage = 55f, SlapPower = 2f, SlapCooldownTime = 0.2f;
 
@@ -14,7 +16,7 @@ public class PlayerSlap : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0) && !IsSlapping)
         {
-            StartCoroutine(SlapCooldown()); //isslapping toggle
+            StartCoroutine(SlapCooldown()); //IsSlapping toggle
 
             Ray ray = Cam.ScreenPointToRay(new Vector3(Screen.width / 2f, Screen.height / 2f));
             Physics.Raycast(ray, out RaycastHit hit, SlapDistance);
@@ -28,10 +30,12 @@ public class PlayerSlap : MonoBehaviour
                     {
                         Rb.AddForce(transform.forward * SlapPower, ForceMode.Impulse);
                     }
+
+                    AudioPlayer.PlayOneShot(SlapAudio);
                 }
             }
 
-            Debug.Log("SLAPPED!");
+            
         }
     }
 

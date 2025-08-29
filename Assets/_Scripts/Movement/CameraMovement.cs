@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
+    public Animator Animator;
+
     [SerializeField] Transform Player;
-    [SerializeField] Animator Animator;
     [SerializeField] DefaultDoor Door;
     [SerializeField] Transform CamAnimTarget;
 
@@ -62,8 +63,6 @@ public class CameraMovement : MonoBehaviour
         {
             Animator.SetTrigger("DoorBroken");
             transform.LookAt(CamAnimTarget.position);
-            yield return new WaitForSeconds(3f);
-            Animator.SetTrigger("EnemyConvoFinished");
             yield return new WaitUntil(() => Animator.GetCurrentAnimatorStateInfo(0).IsName("CameraZoomOutAnimation")); //waits for animation to stop
             Debug.Log("WAIT FINISHED!");
             IsAnimating = false;
