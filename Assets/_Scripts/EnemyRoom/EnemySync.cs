@@ -26,9 +26,8 @@ public class EnemySync : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         Animators[0].SetTrigger("LeftTurn");
-        yield return new WaitForSeconds(1f);
         Animators[1].SetTrigger("RightTurn");
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
 
         foreach (CookieCrook crook in Crooks)
         {

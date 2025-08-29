@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EndDoor : MonoBehaviour, IInteractible
 {
+    public Action OnEnter;
+
     [SerializeField] Transform Player, End;
     [SerializeField] List<CookieCrook> Crooks = new(); 
 
@@ -12,6 +15,7 @@ public class EndDoor : MonoBehaviour, IInteractible
         if(Crooks.Count <= 0)
         {
             Player.position = End.position;
+            OnEnter?.Invoke();
         }
         else
         {
